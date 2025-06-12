@@ -1,6 +1,7 @@
 import vosk
 import wave
 import os
+import json
 import numpy as np
 
 # Cargar modelo solo una vez
@@ -26,7 +27,11 @@ def transcribe(audio_data, samplerate):
                 rec.AcceptWaveform(data)
 
         result = rec.Result()
-        text = eval(result).get("text", "")
+        try:
+            text = json.loads(result).get("text", "")
+        except json.JSONDecodeError:
+            print(f"[stt] ⚠️ Error decodificando JSON: {result}")
+            text = ""
         return text.strip()
     finally:
         if os.path.exists(wf_path):
