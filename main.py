@@ -38,15 +38,18 @@ def consumer():
 
         print("[audio_stream] ⏱ Procesando nuevo fragmento...")
         audio_np = np.concatenate(data, axis=0) if isinstance(data, list) else data
-        texto = transcribe(audio_np, samplerate)
+        rms = np.sqrt(np.mean(audio_np ** 2))
+        print(f"[main] 🔊 RMS del fragmento: {rms:.4f}")
 
-        if texto:
-            print(f"[main] ✅ Texto detectado: {texto}")
-            texto_acumulado.append(texto)
-            silence_count = 0
-        else:
+        if rms < silence_threshold:
             silence_count += 1
-            print("[main] ⏳ En espera de más voz...")
+            print("[main] ⏳ En silencio...")
+        else:
+            silence_count = 0
+            texto = transcribe(audio_np, samplerate)
+            if texto:
+                print(f"[main] ✅ Texto detectado: {texto}")
+                texto_acumulado.append(texto)
 
         # Si hay silencio prolongado y texto acumulado, se responde
         if silence_count >= max_silence_blocks and texto_acumulado:
