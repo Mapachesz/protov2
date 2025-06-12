@@ -70,4 +70,8 @@ if __name__ == "__main__":
     with stream:
         print("🌀 [audio_stream] Hilo de procesamiento iniciado.")
         threading.Thread(target=consumer, daemon=True).start()
-        input("Presiona ENTER para finalizar la llamada...")
+        try:
+            while True:
+                time.sleep(0.1)
+        except KeyboardInterrupt:
+            print("\n👋 Llamada finalizada por el usuario.")
