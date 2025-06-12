@@ -1,7 +1,5 @@
-openai
 coqui-tts
 sounddevice
 numpy
-whisper
 vosk
-pyttsx3
+gpt4all
