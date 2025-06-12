@@ -14,7 +14,6 @@ silence_threshold = 0.01  # umbral de silencio
 max_silence_blocks = 2
 
 # Estados de control
-talking = False
 estado = "ESCUCHANDO"  # Puede ser ESCUCHANDO o PENSANDO
 
 # Buffers y colas
